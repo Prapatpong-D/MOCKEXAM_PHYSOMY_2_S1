@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<ctype.h>
+#include<string.h>
+#include<stdlib.h>
 
 typedef struct DataNode{
     char* data;
@@ -39,7 +41,7 @@ int main() {
 
     traverse(mylist);
 
-    DataNode *current = myList->head;
+    DataNode *current = mylist->head;
     while (current != NULL) {
         free(current->data);
         DataNode* temp = current;
@@ -51,8 +53,8 @@ int main() {
 }
 
 DataNode *createDataNode(char *data){
-    DataNode* newNode=(Datanode*)malloc(sizeof(DataNode));
-    newNode->data = data;
+    DataNode* newNode=(DataNode*)malloc(sizeof(DataNode));
+    newNode->data = strdup(data);
     newNode->next = NULL;
     return newNode;
 }
@@ -62,6 +64,7 @@ SinglyLinkedList* createSinglyLinkedList() {
     SinglyLinkedList* list = (SinglyLinkedList*)malloc(sizeof(SinglyLinkedList));
     list->count =0;
     list->head = NULL;
+    return list;
 }
 
 // Traverse the list and print data
@@ -71,14 +74,14 @@ void traverse(SinglyLinkedList* list) {
         return;
     }
     struct DataNode* pointer = list->head;
-    while (pointer->next != NULL) {
+    while (pointer != NULL) {
         printf("%s",pointer->data);
         if (pointer->next != NULL){
             printf(" -> ");
         }
         pointer = pointer->next;
     }
-    printf("%s\n", pointer->data);
+    printf("\n");
 }
 
 // Insert a new node at the end of the list
@@ -90,7 +93,8 @@ void insert_last(SinglyLinkedList* list, char* data) {
         struct DataNode* pointer = list->head;
         while (pointer->next != NULL){
             pointer = pointer->next;
-        }pNew = pointer->next // ถ้า Linked List ไม่ว่างให้สร้าง Pointer ตัวใหม่และขยับไปที่โหนดสุดท้ายและเปลี่ยน pointer->next เป็น pNew
+        }
+        pointer->next = pNew; // ถ้า Linked List ไม่ว่างให้สร้าง Pointer ตัวใหม่และขยับไปที่โหนดสุดท้ายและเปลี่ยน pointer->next เป็น pNew
     }
     list->count++;
 }
